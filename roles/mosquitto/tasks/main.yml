@@ -1,0 +1,4 @@
+- name: Install mosquitto
+  package:
+    name: mosquitto
+    state: present
