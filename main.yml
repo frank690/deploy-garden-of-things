@@ -19,17 +19,35 @@
 - name: Install pip
   hosts: hosts
   become: true
-  remote_user: nerf
+  remote_user: "{{ user }}"
   roles:
     - pip
   tags:
     - pip
 
+- name: Install Postgresql
+  hosts: hosts
+  become: true
+  remote_user: "{{ user }}"
+  roles:
+    - postgresql
+  tags:
+    - postgresql
+
 - name: Install git and clone repos
   hosts: hosts
   become: true
-  remote_user: root
+  remote_user: "{{ user }}"
   roles:
     - git
   tags:
     - git
+
+- name: Install Grafana
+  hosts: hosts
+  become: true
+  remote_user: "{{ user }}"
+  roles:
+    - grafana
+  tags:
+    - grafana

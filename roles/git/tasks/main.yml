@@ -5,21 +5,21 @@
 
 - name: Ensure .ssh directory exists
   file:
-    dest: /root/.ssh/
+    dest: ~/.ssh/
     mode: 0700
-    owner: root
+    owner: "{{ user }}"
     state: directory
 
 - name: Install ssh private key
   copy:
-    src: /home/anton/.ssh/id_ed25519
-    dest: /root/.ssh/id_ed25519
+    src: ~/.ssh/id_ed25519
+    dest: ~/.ssh/id_ed25519
     mode: 0600
-    owner: root
+    owner: "{{ user }}"
 
 - name: Ensure github.com is a known host
   lineinfile:
-    dest: /root/.ssh/known_hosts
+    dest: ~/.ssh/known_hosts
     create: yes
     state: present
     line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
@@ -28,9 +28,19 @@
 - name: Clone garden-of-things git repositories
   git:
     repo: git@github.com:frank690/garden-of-things.git
-    dest: /root/garden-of-things
+    dest: ~/garden-of-things
 
 - name: Install garden-of-things
   pip:
-    chdir: /root/garden-of-things
+    chdir: ~/garden-of-things
     name: .
+
+- name: Read the SQL script that comes with the garden-of-things repo
+  shell: cat ~/garden-of-things/resources/init.sql
+  register: sql_script
+
+- name: Apply SQL script to set up garden-of-things on DB
+  become_user: postgres
+  postgresql_query:
+    db: "{{ db_name }}"
+    query: "{{ sql_script }}"

@@ -1,0 +1,12 @@
+- name: Set ufw rules
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+    delete: "{{ item.delete }}"
+  with_items: "{{ vars.rules }}"
+
+- name: Set state of ufw
+  ufw:
+    state: "{{ vars.state }}"
+
