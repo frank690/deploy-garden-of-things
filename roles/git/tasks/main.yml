@@ -35,12 +35,5 @@
     chdir: ~/garden-of-things
     name: .
 
-- name: Read the SQL script that comes with the garden-of-things repo
-  shell: cat ~/garden-of-things/resources/init.sql
-  register: sql_script
-
-- name: Apply SQL script to set up garden-of-things on DB
-  become_user: postgres
-  postgresql_query:
-    db: "{{ db_name }}"
-    query: "{{ sql_script }}"
+- name: Execute preparation script
+  command: python3 ~/garden-of-things/resources/preparation.py
