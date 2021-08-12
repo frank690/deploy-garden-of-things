@@ -15,3 +15,13 @@ rules:
     port: 443
     proto: tcp
     delete: no
+  - name: HTTPS
+    rule: allow
+    port: 3000
+    proto: tcp
+    delete: no
+  - name: HTTP
+    rule: allow
+    port: 3000
+    proto: tcp
+    delete: no
