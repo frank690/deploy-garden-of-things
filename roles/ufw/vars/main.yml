@@ -25,3 +25,8 @@ rules:
     port: 3000
     proto: tcp
     delete: no
+  - name: MQTT
+    rule: allow
+    port: 1883
+    proto: tcp
+    delete: no
